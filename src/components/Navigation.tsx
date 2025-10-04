@@ -32,7 +32,7 @@ export const Navigation = () => {
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-lg">W</span>
             </div>
-            <span className="font-heading font-bold text-xl text-foreground">WP DevTools</span>
+            <span className="font-mono font-bold text-xl text-foreground">WP DevTools</span>
           </a>
 
           {/* Desktop Menu */}

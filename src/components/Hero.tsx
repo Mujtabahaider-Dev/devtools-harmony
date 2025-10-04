@@ -19,7 +19,7 @@ export const Hero = () => {
           </div>
 
           {/* Headline */}
-          <h1 className="font-heading font-bold text-5xl md:text-7xl text-foreground leading-tight">
+          <h1 className="font-mono font-bold text-5xl md:text-7xl text-foreground leading-tight">
             Build Better WordPress
             <br />
             <span className="bg-gradient-primary bg-clip-text text-transparent">Faster & Smarter</span>
@@ -45,15 +45,15 @@ export const Hero = () => {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-8 pt-12 max-w-2xl mx-auto">
             <div>
-              <div className="font-heading font-bold text-3xl md:text-4xl text-foreground">50+</div>
+              <div className="font-mono font-bold text-3xl md:text-4xl text-foreground">50+</div>
               <div className="text-sm text-muted-foreground mt-1">Free Tools</div>
             </div>
             <div>
-              <div className="font-heading font-bold text-3xl md:text-4xl text-foreground">100k+</div>
+              <div className="font-mono font-bold text-3xl md:text-4xl text-foreground">100k+</div>
               <div className="text-sm text-muted-foreground mt-1">Developers</div>
             </div>
             <div>
-              <div className="font-heading font-bold text-3xl md:text-4xl text-foreground">4.9★</div>
+              <div className="font-mono font-bold text-3xl md:text-4xl text-foreground">4.9★</div>
               <div className="text-sm text-muted-foreground mt-1">Rating</div>
             </div>
           </div>

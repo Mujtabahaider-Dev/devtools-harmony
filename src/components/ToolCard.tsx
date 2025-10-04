@@ -26,7 +26,7 @@ export const ToolCard = ({ icon: Icon, title, description, category, featured }:
         <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
           <Icon className="h-6 w-6 text-primary" />
         </div>
-        <CardTitle className="font-heading text-xl">{title}</CardTitle>
+        <CardTitle className="font-mono text-xl font-semibold">{title}</CardTitle>
         <CardDescription className="text-muted-foreground">{description}</CardDescription>
       </CardHeader>
       
