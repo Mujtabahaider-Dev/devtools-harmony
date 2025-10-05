@@ -19,7 +19,7 @@ export const Hero = () => {
           </div>
 
           {/* Headline */}
-          <h1 className="font-mono font-bold text-5xl md:text-7xl text-foreground leading-tight">
+          <h1 className="font-mono font-bold text-4xl md:text-5xl text-foreground leading-tight">
             Build Better WordPress
             <br />
             <span className="bg-gradient-primary bg-clip-text text-transparent">Faster & Smarter</span>
