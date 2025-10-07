@@ -38,7 +38,7 @@ const tools = [
   {
     icon: Palette,
     title: "Theme Inspector",
-    description: "Inspect and analyze WordPress theme code and structure.",
+    description: "Detect which WordPress theme any website is using.",
     category: "Design",
   },
   {
@@ -56,7 +56,7 @@ const tools = [
   {
     icon: FileCode,
     title: "Plugin Generator",
-    description: "Generate boilerplate code for WordPress plugins.",
+    description: "Detect which WordPress plugins any website is using.",
     category: "Development",
   },
   {

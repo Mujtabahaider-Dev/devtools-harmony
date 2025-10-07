@@ -8,6 +8,8 @@ import NotFound from "./pages/NotFound";
 import PasswordGenerator from "./pages/tools/PasswordGenerator";
 import SpeedOptimizer from "./pages/tools/SpeedOptimizer";
 import SEOAnalyzer from "./pages/tools/SEOAnalyzer";
+import ThemeDetector from "./pages/tools/ThemeDetector";
+import PluginDetector from "./pages/tools/PluginDetector";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/tools/password-generator" element={<PasswordGenerator />} />
           <Route path="/tools/speed-optimizer" element={<SpeedOptimizer />} />
           <Route path="/tools/seo-analyzer" element={<SEOAnalyzer />} />
+          <Route path="/tools/theme-detector" element={<ThemeDetector />} />
+          <Route path="/tools/plugin-detector" element={<PluginDetector />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

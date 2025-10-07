@@ -20,6 +20,8 @@ export const ToolCard = ({ icon: Icon, title, description, category, featured }:
       "Password Generator": "/tools/password-generator",
       "Speed Optimizer": "/tools/speed-optimizer",
       "SEO Analyzer": "/tools/seo-analyzer",
+      "Theme Inspector": "/tools/theme-detector",
+      "Plugin Generator": "/tools/plugin-detector",
     };
     return urlMap[title] || "#";
   };
