@@ -19,7 +19,7 @@ export const Hero = () => {
           </div>
 
           {/* Headline */}
-          <h1 className="font-mono font-bold text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight">
+          <h1 className="font-mono font-bold text-4xl md:text-6xl lg:text-7xl text-foreground leading-tight tracking-tight">
             Build Better WordPress
             <br />
             <span className="bg-gradient-primary bg-clip-text text-transparent">Faster & Smarter</span>
@@ -33,11 +33,11 @@ export const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-            <Button size="lg" variant="hero" className="text-base px-8 py-6">
+            <Button size="lg" variant="hero" className="text-lg px-10 py-7 rounded-xl">
               <Search className="mr-2 h-5 w-5" />
               Explore Tools
             </Button>
-            <Button size="lg" variant="heroOutline" className="text-base px-8 py-6">
+            <Button size="lg" variant="heroOutline" className="text-lg px-10 py-7 rounded-xl">
               View Documentation
             </Button>
           </div>
