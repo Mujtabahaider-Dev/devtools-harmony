@@ -25,26 +25,62 @@ export default function SEOAnalyzer() {
       return;
     }
 
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setResults({
-        score: Math.floor(Math.random() * 20) + 75,
-        checks: [
-          { name: "Meta Title", status: "pass", message: "Title tag is present and optimized" },
-          { name: "Meta Description", status: "pass", message: "Meta description is present (155 characters)" },
-          { name: "H1 Tag", status: "pass", message: "Single H1 tag found" },
-          { name: "Image Alt Text", status: "warning", message: "3 images missing alt text" },
-          { name: "SSL Certificate", status: "pass", message: "HTTPS is enabled" },
-          { name: "Mobile Friendly", status: "pass", message: "Page is mobile responsive" },
-          { name: "Page Speed", status: "warning", message: "Load time could be improved" },
-          { name: "XML Sitemap", status: "pass", message: "Sitemap.xml found" },
-          { name: "Robots.txt", status: "pass", message: "Robots.txt is configured" },
-          { name: "Broken Links", status: "fail", message: "2 broken links detected" },
-        ],
+    // Validate URL format
+    let validUrl: URL;
+    try {
+      validUrl = new URL(url);
+    } catch {
+      toast({
+        title: "Invalid URL",
+        description: "Please enter a valid URL (e.g., https://example.com)",
+        variant: "destructive",
       });
-      setLoading(false);
-    }, 2000);
+      return;
+    }
+
+    setLoading(true);
+    
+    const checks = [];
+    let passCount = 0;
+    
+    // Check SSL
+    if (validUrl.protocol === 'https:') {
+      checks.push({ name: "SSL Certificate", status: "pass", message: "HTTPS is enabled" });
+      passCount++;
+    } else {
+      checks.push({ name: "SSL Certificate", status: "fail", message: "Site should use HTTPS for security" });
+    }
+    
+    // Check if URL is accessible
+    try {
+      await fetch(url, { mode: 'no-cors', cache: 'no-cache' });
+      checks.push({ name: "Site Accessibility", status: "pass", message: "Website is accessible" });
+      passCount++;
+    } catch {
+      checks.push({ name: "Site Accessibility", status: "warning", message: "Unable to verify accessibility" });
+    }
+    
+    // Add standard WordPress SEO checks
+    checks.push(
+      { name: "Meta Title", status: "warning", message: "Verify title tag is present and optimized (50-60 chars)" },
+      { name: "Meta Description", status: "warning", message: "Ensure meta description exists (150-160 chars)" },
+      { name: "H1 Tag", status: "warning", message: "Check for single, keyword-rich H1 tag" },
+      { name: "Image Alt Text", status: "warning", message: "Add descriptive alt text to all images" },
+      { name: "Mobile Friendly", status: "warning", message: "Ensure responsive design for mobile devices" },
+      { name: "XML Sitemap", status: "warning", message: "Verify sitemap.xml exists and is submitted to Google" },
+      { name: "Robots.txt", status: "warning", message: "Check robots.txt configuration" },
+      { name: "Page Speed", status: "warning", message: "Optimize for fast load times (under 3 seconds)" }
+    );
+    
+    const score = Math.floor((passCount / checks.length) * 100);
+    
+    setResults({ score, checks });
+    setLoading(false);
+    
+    toast({
+      title: "Analysis Complete",
+      description: "SEO recommendations generated",
+    });
   };
 
   const getStatusIcon = (status: string) => {

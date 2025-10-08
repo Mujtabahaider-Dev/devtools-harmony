@@ -77,10 +77,16 @@ const PluginDetector = () => {
       });
     } catch (error) {
       console.error("Error detecting plugins:", error);
+      
+      // Provide helpful manual detection instructions
+      setPlugins([{
+        name: "Manual Detection Required",
+        slug: "See instructions below - CORS security prevents automatic detection"
+      }]);
+      
       toast({
-        title: "Error",
-        description: "Failed to detect plugins. The site might be blocking requests or is not accessible.",
-        variant: "destructive",
+        title: "Manual Detection",
+        description: "Check the help section below for manual detection steps",
       });
     } finally {
       setLoading(false);
@@ -201,14 +207,15 @@ const PluginDetector = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Limitations</CardTitle>
+                <CardTitle className="text-lg">Manual Detection</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
+                <p className="mb-2 font-semibold">If auto-detection fails:</p>
                 <ul className="space-y-2">
-                  <li>• Only detects publicly visible plugins</li>
-                  <li>• Security plugins may hide information</li>
-                  <li>• Custom plugins may not be identified</li>
-                  <li>• Results depend on site accessibility</li>
+                  <li>1. Right-click the website → View Page Source</li>
+                  <li>2. Press Ctrl+F (Cmd+F on Mac) to search</li>
+                  <li>3. Search for: <code className="bg-muted px-1 py-0.5 rounded">wp-content/plugins/</code></li>
+                  <li>4. Plugin names appear after /plugins/ in URLs</li>
                 </ul>
               </CardContent>
             </Card>

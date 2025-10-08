@@ -80,10 +80,16 @@ const ThemeDetector = () => {
       });
     } catch (error) {
       console.error("Error detecting theme:", error);
+      
+      // Provide helpful manual detection instructions
+      setThemeInfo({
+        name: "Manual Detection Required",
+        description: "Due to browser security restrictions (CORS), automatic detection failed. Follow these steps to manually detect the theme:",
+      });
+      
       toast({
-        title: "Error",
-        description: "Failed to detect theme. The site might be blocking requests or is not accessible.",
-        variant: "destructive",
+        title: "Manual Detection",
+        description: "Check the help section below for manual detection steps",
       });
     } finally {
       setLoading(false);
@@ -209,14 +215,15 @@ const ThemeDetector = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Use Cases</CardTitle>
+                <CardTitle className="text-lg">Manual Detection</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground">
+                <p className="mb-2 font-semibold">If auto-detection fails:</p>
                 <ul className="space-y-2">
-                  <li>• Research competitor websites</li>
-                  <li>• Find themes for inspiration</li>
-                  <li>• Verify theme installations</li>
-                  <li>• Audit client websites</li>
+                  <li>1. Right-click the website → View Page Source</li>
+                  <li>2. Press Ctrl+F (Cmd+F on Mac) to search</li>
+                  <li>3. Search for: <code className="bg-muted px-1 py-0.5 rounded">wp-content/themes/</code></li>
+                  <li>4. Theme name appears after /themes/ in the URL</li>
                 </ul>
               </CardContent>
             </Card>
