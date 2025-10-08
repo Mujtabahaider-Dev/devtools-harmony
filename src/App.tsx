@@ -3,8 +3,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import PasswordGenerator from "./pages/tools/PasswordGenerator";
 import SpeedOptimizer from "./pages/tools/SpeedOptimizer";
 import SEOAnalyzer from "./pages/tools/SEOAnalyzer";
@@ -20,17 +23,21 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/tools/password-generator" element={<PasswordGenerator />} />
-          <Route path="/tools/speed-optimizer" element={<SpeedOptimizer />} />
-          <Route path="/tools/seo-analyzer" element={<SEOAnalyzer />} />
-          <Route path="/tools/theme-detector" element={<ThemeDetector />} />
-          <Route path="/tools/plugin-detector" element={<PluginDetector />} />
-          <Route path="/tools/webp-converter" element={<WebPConverter />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/tools/password-generator" element={<PasswordGenerator />} />
+            <Route path="/tools/speed-optimizer" element={<SpeedOptimizer />} />
+            <Route path="/tools/seo-analyzer" element={<SEOAnalyzer />} />
+            <Route path="/tools/theme-detector" element={<ThemeDetector />} />
+            <Route path="/tools/plugin-detector" element={<PluginDetector />} />
+            <Route path="/tools/webp-converter" element={<WebPConverter />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
