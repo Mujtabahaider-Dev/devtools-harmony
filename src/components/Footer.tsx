@@ -41,17 +41,20 @@ export const Footer = () => {
               Essential free tools and resources for WordPress developers. Build better, faster, smarter.
             </p>
             <div className="flex space-x-2">
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Github className="h-5 w-5" />
+              <Button variant="outline" size="icon" className="rounded-full" asChild>
+                <a href="https://github.com/Mujtabahaider-Dev/devtools-harmony" target="_blank" rel="noopener noreferrer">
+                  <Github className="h-5 w-5" />
+                </a>
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Twitter className="h-5 w-5" />
+              <Button variant="outline" size="icon" className="rounded-full" asChild>
+                <a href="https://www.linkedin.com/in/mujtabahaiderdev/" target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="h-5 w-5" />
+                </a>
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Linkedin className="h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <Mail className="h-5 w-5" />
+              <Button variant="outline" size="icon" className="rounded-full" asChild>
+                <a href="mailto:work.mujtabahaider@gmail.com">
+                  <Mail className="h-5 w-5" />
+                </a>
               </Button>
             </div>
           </div>
