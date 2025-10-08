@@ -25,7 +25,6 @@ export default function SEOAnalyzer() {
       return;
     }
 
-    // Validate URL format
     let validUrl: URL;
     try {
       validUrl = new URL(url);
@@ -39,48 +38,125 @@ export default function SEOAnalyzer() {
     }
 
     setLoading(true);
-    
-    const checks = [];
-    let passCount = 0;
-    
-    // Check SSL
-    if (validUrl.protocol === 'https:') {
-      checks.push({ name: "SSL Certificate", status: "pass", message: "HTTPS is enabled" });
-      passCount++;
-    } else {
-      checks.push({ name: "SSL Certificate", status: "fail", message: "Site should use HTTPS for security" });
-    }
-    
-    // Check if URL is accessible
+
     try {
-      await fetch(url, { mode: 'no-cors', cache: 'no-cache' });
-      checks.push({ name: "Site Accessibility", status: "pass", message: "Website is accessible" });
-      passCount++;
-    } catch {
-      checks.push({ name: "Site Accessibility", status: "warning", message: "Unable to verify accessibility" });
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      const data = await response.json();
+      const html = data.contents;
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      const checks = [];
+      let passCount = 0;
+
+      if (validUrl.protocol === 'https:') {
+        checks.push({ name: "SSL Certificate", status: "pass", message: "HTTPS is enabled" });
+        passCount++;
+      } else {
+        checks.push({ name: "SSL Certificate", status: "fail", message: "Site should use HTTPS for security" });
+      }
+
+      const title = doc.querySelector('title')?.textContent || '';
+      if (title && title.length >= 30 && title.length <= 60) {
+        checks.push({ name: "Meta Title", status: "pass", message: `Title exists and is optimized (${title.length} characters)` });
+        passCount++;
+      } else if (title && title.length > 0) {
+        checks.push({ name: "Meta Title", status: "warning", message: `Title found but ${title.length < 30 ? 'too short' : 'too long'} (${title.length} characters)` });
+      } else {
+        checks.push({ name: "Meta Title", status: "fail", message: "Missing title tag" });
+      }
+
+      const metaDesc = doc.querySelector('meta[name="description"]')?.getAttribute('content') || '';
+      if (metaDesc && metaDesc.length >= 120 && metaDesc.length <= 160) {
+        checks.push({ name: "Meta Description", status: "pass", message: `Description exists and is optimized (${metaDesc.length} characters)` });
+        passCount++;
+      } else if (metaDesc && metaDesc.length > 0) {
+        checks.push({ name: "Meta Description", status: "warning", message: `Description found but ${metaDesc.length < 120 ? 'too short' : 'too long'} (${metaDesc.length} characters)` });
+      } else {
+        checks.push({ name: "Meta Description", status: "fail", message: "Missing meta description" });
+      }
+
+      const h1Tags = doc.querySelectorAll('h1');
+      if (h1Tags.length === 1) {
+        checks.push({ name: "H1 Tag", status: "pass", message: `Single H1 tag found: "${h1Tags[0].textContent?.substring(0, 50)}..."` });
+        passCount++;
+      } else if (h1Tags.length > 1) {
+        checks.push({ name: "H1 Tag", status: "warning", message: `Multiple H1 tags found (${h1Tags.length}). Best practice is one per page` });
+      } else {
+        checks.push({ name: "H1 Tag", status: "fail", message: "No H1 tag found" });
+      }
+
+      const images = doc.querySelectorAll('img');
+      const imagesWithoutAlt = Array.from(images).filter(img => !img.getAttribute('alt'));
+      if (images.length > 0) {
+        const altPercentage = ((images.length - imagesWithoutAlt.length) / images.length * 100).toFixed(0);
+        if (imagesWithoutAlt.length === 0) {
+          checks.push({ name: "Image Alt Text", status: "pass", message: `All ${images.length} images have alt text` });
+          passCount++;
+        } else {
+          checks.push({ name: "Image Alt Text", status: "warning", message: `${altPercentage}% of images have alt text (${imagesWithoutAlt.length} missing)` });
+        }
+      } else {
+        checks.push({ name: "Image Alt Text", status: "warning", message: "No images found on page" });
+      }
+
+      const viewport = doc.querySelector('meta[name="viewport"]');
+      if (viewport) {
+        checks.push({ name: "Mobile Friendly", status: "pass", message: "Viewport meta tag is present" });
+        passCount++;
+      } else {
+        checks.push({ name: "Mobile Friendly", status: "fail", message: "Missing viewport meta tag for mobile responsiveness" });
+      }
+
+      const ogTags = doc.querySelectorAll('meta[property^="og:"]');
+      if (ogTags.length >= 3) {
+        checks.push({ name: "Open Graph Tags", status: "pass", message: `${ogTags.length} Open Graph tags found for social sharing` });
+        passCount++;
+      } else if (ogTags.length > 0) {
+        checks.push({ name: "Open Graph Tags", status: "warning", message: `Only ${ogTags.length} Open Graph tags found. Add more for better social sharing` });
+      } else {
+        checks.push({ name: "Open Graph Tags", status: "fail", message: "No Open Graph tags found" });
+      }
+
+      const canonical = doc.querySelector('link[rel="canonical"]');
+      if (canonical) {
+        checks.push({ name: "Canonical URL", status: "pass", message: "Canonical URL is set" });
+        passCount++;
+      } else {
+        checks.push({ name: "Canonical URL", status: "warning", message: "Consider adding canonical URL to avoid duplicate content issues" });
+      }
+
+      const headings = {
+        h2: doc.querySelectorAll('h2').length,
+        h3: doc.querySelectorAll('h3').length,
+        h4: doc.querySelectorAll('h4').length,
+      };
+      if (headings.h2 > 0) {
+        checks.push({ name: "Content Structure", status: "pass", message: `Good heading structure: ${headings.h2} H2, ${headings.h3} H3, ${headings.h4} H4 tags` });
+        passCount++;
+      } else {
+        checks.push({ name: "Content Structure", status: "warning", message: "Add more heading tags (H2, H3) to improve content structure" });
+      }
+
+      const score = Math.floor((passCount / checks.length) * 100);
+
+      setResults({ score, checks, pageTitle: title });
+      setLoading(false);
+
+      toast({
+        title: "Analysis Complete",
+        description: `SEO Score: ${score}/100`,
+      });
+    } catch (error) {
+      setLoading(false);
+      toast({
+        title: "Analysis Failed",
+        description: "Unable to analyze the website. Please check the URL and try again.",
+        variant: "destructive",
+      });
     }
-    
-    // Add standard WordPress SEO checks
-    checks.push(
-      { name: "Meta Title", status: "warning", message: "Verify title tag is present and optimized (50-60 chars)" },
-      { name: "Meta Description", status: "warning", message: "Ensure meta description exists (150-160 chars)" },
-      { name: "H1 Tag", status: "warning", message: "Check for single, keyword-rich H1 tag" },
-      { name: "Image Alt Text", status: "warning", message: "Add descriptive alt text to all images" },
-      { name: "Mobile Friendly", status: "warning", message: "Ensure responsive design for mobile devices" },
-      { name: "XML Sitemap", status: "warning", message: "Verify sitemap.xml exists and is submitted to Google" },
-      { name: "Robots.txt", status: "warning", message: "Check robots.txt configuration" },
-      { name: "Page Speed", status: "warning", message: "Optimize for fast load times (under 3 seconds)" }
-    );
-    
-    const score = Math.floor((passCount / checks.length) * 100);
-    
-    setResults({ score, checks });
-    setLoading(false);
-    
-    toast({
-      title: "Analysis Complete",
-      description: "SEO recommendations generated",
-    });
   };
 
   const getStatusIcon = (status: string) => {
