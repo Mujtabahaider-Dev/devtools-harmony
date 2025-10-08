@@ -10,6 +10,7 @@ import SpeedOptimizer from "./pages/tools/SpeedOptimizer";
 import SEOAnalyzer from "./pages/tools/SEOAnalyzer";
 import ThemeDetector from "./pages/tools/ThemeDetector";
 import PluginDetector from "./pages/tools/PluginDetector";
+import WebPConverter from "./pages/tools/WebPConverter";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/tools/seo-analyzer" element={<SEOAnalyzer />} />
           <Route path="/tools/theme-detector" element={<ThemeDetector />} />
           <Route path="/tools/plugin-detector" element={<PluginDetector />} />
+          <Route path="/tools/webp-converter" element={<WebPConverter />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

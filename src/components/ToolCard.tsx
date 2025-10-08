@@ -22,6 +22,7 @@ export const ToolCard = ({ icon: Icon, title, description, category, featured }:
       "SEO Analyzer": "/tools/seo-analyzer",
       "Theme Inspector": "/tools/theme-detector",
       "Plugin Generator": "/tools/plugin-detector",
+      "Image Compressor": "/tools/webp-converter",
     };
     return urlMap[title] || "#";
   };
